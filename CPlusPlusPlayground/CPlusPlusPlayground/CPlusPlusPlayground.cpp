@@ -109,6 +109,6 @@ start:
         cout << "Bye, have a great time!" << endl;
     }
     system("pause");
-	return 0;
+    return 0;
 }
 
