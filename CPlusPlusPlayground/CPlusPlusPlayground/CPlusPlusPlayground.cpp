@@ -26,7 +26,7 @@ char map[10][20] = {
 int x = 1, y = 1;
 
 int _tmain(int argc, _TCHAR* argv[]) {
-start:
+    start:
     int posX, posY;
     posX = rand() % 8 + 1;
     posY = rand() % 8 + 1;
@@ -94,7 +94,7 @@ start:
             }
         }
     }
-    cout << "Would you liek to play again? (y/n) \t";
+    cout << "Would you like to play again? (y/n) \t";
     string input;
     cin >> input;
     if (input == "y") {
