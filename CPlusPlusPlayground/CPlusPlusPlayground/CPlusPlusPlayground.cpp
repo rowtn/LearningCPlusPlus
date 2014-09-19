@@ -5,108 +5,22 @@
 #include <iostream>
 #include "windows.h"
 #include <string>
+#include <ctime>
 
 using namespace std;
 
-bool gameRunning = true;
-char map[10][20] = {
-    "###################",
-    "#@                #",
-    "#                 #",
-    "#                 #",
-    "#                 #",
-    "#                 #",
-    "#                 #",
-    "#                 #",
-    "#                 #",
-    "###################"
-};
-
-//Character coords
-int x = 1, y = 1;
-
 int _tmain(int argc, _TCHAR* argv[]) {
-    start:
-    int posX, posY;
-    posX = rand() % 8 + 1;
-    posY = rand() % 8 + 1;
-    map[posY][posX] = '+';
-    while (gameRunning) {
-        system("cls");
-        for (int display = 0; display < 10; display++) {
-            cout << map[display] << endl;
-        }
-        system("pause>null");
-        if (GetAsyncKeyState(VK_DOWN)) {
-            int yTo = y + 1;
-            if (map[yTo][x] == ' ') {
-                map[y][x] = ' ';
-                map[yTo][x] = '@';
-                y = yTo;
-            }
-            else if (map[yTo][x] == '+') {
-                map[y][x] = ' ';
-                map[yTo][x] = '@';
-                cout << "You win!!" << endl;
-                gameRunning = false;
-            }
-        } else if (GetAsyncKeyState(VK_UP)) {
-            int yTo = y - 1;
-            if (map[yTo][x] == ' ') {
-                map[y][x] = ' ';
-                map[yTo][x] = '@';
-                y = yTo;
-            }
-            else if (map[yTo][x] == '+') {
-                map[y][x] = ' ';
-                map[yTo][x] = '@';
-                cout << "You win!!" << endl;
-                gameRunning = false;
-            }
-        }
-        else if (GetAsyncKeyState(VK_RIGHT)) {
-            int xTo = x + 1;
-            if (map[y][xTo] == ' ') {
-                map[y][x] = ' ';
-                map[y][xTo] = '@';
-                x = xTo;
-            }
-            else if (map[y][xTo] == '+') {
-                map[y][x] = ' ';
-                map[y][xTo] = '@';
-                cout << "You win!!" << endl;
-                gameRunning = false;
-            }
-        }
-        else if (GetAsyncKeyState(VK_LEFT)) {
-            int xTo = x - 1;
-            if (map[y][xTo] == ' ') {
-                map[y][x] = ' ';
-                map[y][xTo] = '@';
-                x = xTo;
-            }
-            else if (map[y][xTo] == '+') {
-                map[y][x] = ' ';
-                map[y][xTo] = '@';
-                cout << "You win!!" << endl;
-                gameRunning = false;
-            }
-        }
+    int max = 0;
+    int list[100];
+    srand(time(0));
+    for (int i = 0; i < 100; i++) {
+        list[i] = rand();
     }
-    cout << "Would you like to play again? (y/n) \t";
-    string input;
-    cin >> input;
-    if (input == "y") {
-        map[y][x] = ' ';
-        x = 1;
-        y = 1;
-        map[y][x] = '@';
-        gameRunning = true;
-        goto start;
+    for (int i = 0; i < 100; i++) {
+        cout << "heh:\t " << list[i] << endl;
+        if (max < list[i]) max = list[i];
     }
-    else {
-        cout << "Bye, have a great time!" << endl;
-    }
+    cout << "The max number is:\t" << max << endl;
     system("pause");
     return 0;
 }
