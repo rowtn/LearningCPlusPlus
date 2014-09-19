@@ -37,7 +37,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
             cout << map[display] << endl;
         }
         system("pause>null");
-
         if (GetAsyncKeyState(VK_DOWN)) {
             int yTo = y + 1;
             if (map[yTo][x] == ' ') {
@@ -111,4 +110,3 @@ int _tmain(int argc, _TCHAR* argv[]) {
     system("pause");
     return 0;
 }
-
