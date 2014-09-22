@@ -3,83 +3,89 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include <string>
+#include <ctime>
+#include <windows.h>
 
 using namespace std;
 
-void taskOne(void);
-void taskTwo(void);
-void taskThree(void);
-void taskFour(void);
+char lines[3][3];
+char possible[5] = { '+', '*', '$', '@', '~' };
+const int MAX_ITERATIONS = 10;
+
+void display(void);
 
 int _tmain(int argc, _TCHAR* argv[]) {
+start:
+    srand(time(NULL));
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            lines[i][j] = possible[rand() % 5];
+        }
+    }
+    display();
+    int iterations = 0;
+    while (iterations < MAX_ITERATIONS) {
+        for (int i = 0; i < 3; i++) {
+            lines[2][i] = lines[1][i];
+            lines[1][i] = lines[0][i];
+            lines[0][i] = possible[rand() % 5];
+        }
+        system("cls");
+        display();
+        iterations++;
+        Sleep(iterations * 50);
+    }
+    /*Checking for wins*/
+    bool won = false;
+    for (int i = 0; i < 3; i++) {
+        if (lines[i][0] == lines[i][1] && lines[i][1] == lines[i][2]) {
+            won = true;
+            cout << "[DEBUG] horizontal line " << i + 1 << endl;
+            break;
+        }
+        if (lines[0][i] == lines[1][i] && lines[2][i] == lines[1][i]) {
+            won = true;
+            cout << "[DEBUG] vertical line " << i + 1 << endl;
+            break;
+        }
+    }
+    if (lines[0][0] == lines[1][1] && lines[2][2] == lines[1][1]) {
+        won = true;
+        cout << "[DEBUG] diagonal top right" << endl;
+    }
+    if (lines[2][0] == lines[1][1] && lines[1][1] == lines[0][2]) {
+        won = true;
+        cout << "[DEBUG] diagonal bottom right" << endl;
+    }
+    if (won) {
+        cout << "You won!" << endl;
+    }
+    else {
+        cout << "You lost :(" << endl;
+    }
+    cout << "Would you like to play again? (y/n)" << endl;
+prompt:
+    system("pause>null");
+    if (GetAsyncKeyState('Y')) {
+        system("cls");
+        goto start;
+    }
+    else if (GetAsyncKeyState('N')) {
+        cout << "Bye, have a great time!" << endl;
+    }
+    else {
+        cout << "Sorry, what was that?" << endl;
+        goto prompt;
+    }
     system("pause");
     return 0;
 }
 
-/*Arrays are not needed for this task.*/
-void taskOne() {
-    int foo[10];
-    int evenCount = 0, evenSum = 0;
-    for (int i = 0; i < 10; i++) {
-        cout << "Enter number " << i + 1 << " for the list:\t" << endl;
-        cin >> foo[i];
-        if (foo[i] % 2 == 0) {
-            evenCount++;
-            evenSum += foo[i];
-        }
-    }
-    cout << "There were " << evenCount << " even numbers, and their average is " << evenSum / evenCount << "." << endl;
-}
-
-void taskTwo() {
-    string currentWord = "";
-    for (int i = 0; i < 10; i++) {
-        cout << "Enter word number " << i + 1 << ":\t";
-        string foo;
-        cin >> foo;
-        if (foo.size() > currentWord.size()) {
-            currentWord = foo;
+void display() {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << lines[i][j];
         }
         cout << endl;
     }
-    cout << "The longest word was \"" << currentWord << "\"." << endl;
-}
-
-void taskThree() {
-    int totalPayable = 0;
-    for (int i = 0; i < 10; i++) {
-        cout << "Enter the salary for Employee #" << i + 1 << ":\t";
-        int foo;
-        cin >> foo;
-        totalPayable += foo;
-    }
-    cout << "You will have to pay anually $" << totalPayable << " to your employees." << endl;
-}
-
-void taskFour() {
-    string students[10];
-    int grades[10];
-    for (int i = 0; i < 10; i++) {
-        cout << "Enter Student #" << i + 1 << "'s name: \t";
-        cin >> students[i];
-        cout << "Enter their grade:\t";
-        cin >> grades[i];
-    }
-    gradeCheck:
-    cout << "Enter a student's name to see their grade:\t";
-    string student;
-    cin >> student;
-    int grade;
-    for (int i = 0; i < 10; i++) {
-        if (students[i] == student) {
-            grade = grades[i];
-            goto finish;
-        }
-    }
-    cout << "Could not find student: " << student << "!" << endl;
-    goto gradeCheck;
-finish:
-    cout << student << "'s grade was " << grade << ".\n";
-    goto gradeCheck;
 }
