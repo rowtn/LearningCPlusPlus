@@ -29,7 +29,7 @@ void taskOne() {
             evenSum += foo[i];
         }
     }
-    cout << "There were " << evenCount << " even numbers, and their average is " << evenSum / evenCount << ".";
+    cout << "There were " << evenCount << " even numbers, and their average is " << evenSum / evenCount << "." << endl;
 }
 
 void taskTwo() {
@@ -66,6 +66,7 @@ void taskFour() {
         cout << "Enter their grade:\t";
         cin >> grades[i];
     }
+    gradeCheck:
     cout << "Enter a student's name to see their grade:\t";
     string student;
     cin >> student;
@@ -76,8 +77,9 @@ void taskFour() {
             goto finish;
         }
     }
-    goto end;
+    cout << "Could not find student: " << student << "!" << endl;
+    goto gradeCheck;
 finish:
     cout << student << "'s grade was " << grade << ".\n";
-end:
+    goto gradeCheck;
 }
