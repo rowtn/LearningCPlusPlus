@@ -16,7 +16,7 @@ void display(void);
 
 int _tmain(int argc, _TCHAR* argv[]) {
 start:
-    srand(time(NULL));
+    srand(time(0));
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             lines[i][j] = possible[rand() % 5];
@@ -82,10 +82,14 @@ prompt:
 }
 
 void display() {
+    cout << "-------" << endl;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
+            cout << "-";
             cout << lines[i][j];
         }
+        cout << "-";
         cout << endl;
     }
+    cout << "-------" << endl;
 }
