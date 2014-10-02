@@ -15,7 +15,6 @@ void display(void);
 void gameLoop(void);
 void startShoot(int, int);
 struct Player;
-struct Bullet;
 
 enum Dir {
     RIGHT, LEFT
@@ -26,8 +25,6 @@ const string barrier[2] = { { bar, bar, bar }, { bar, bar, bar } };
 char board[30][30];
 const string playerAvatar = { char(205), char(202), char(205) };
 const char bullet = char(167);
-int bulletCount = -1;
-Bullet bullets[];
 
 struct Player {
 private:
@@ -71,39 +68,9 @@ public:
         }
     }
     void fire() {
-        startShoot(x + 1, y + 1);
+        startShoot(x + 1, y - 1);
     }
 
-};
-
-struct Bullet {
-private:
-    int x, y;
-    string shooter;
-public:
-    
-    Bullet(int i, int j, string s) {
-        x = i;
-        y = j;
-        shooter = s;
-    }
-
-    void move() {
-        if (shooter == "Player") {
-            y--;
-        }
-        else {
-            y++;
-        }
-    }
-
-    int getX() {
-        return x;
-    }
-
-    int getY() {
-        return y;
-    }
 };
 
 Player player = Player(3, 28, playerAvatar);
@@ -120,12 +87,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
     long t = GetTickCount();
     while (gameRunning) {
         gameLoop();
-        if (GetTickCount() - t > 100) {
-            t = GetTickCount();
-            for (int i = 0; i < bulletCount; i++) {
-                bullets[i].move();
-            }
-        }
     }
     cin.get();
 	return 0;
@@ -188,12 +149,7 @@ void gameLoop() {
     system("pause");
 }
 
-void startShoot(int x, int y, string s) {
-    bullets[bulletCount++] = Bullet(x, y, s);
-    while (y > 1) {
-        Sleep(50);
-        board[y][x] = ' ';
-        y--;
-        board[y][x] = bullet;
-    }
+void startShoot(int x, int y)
+{
+    //md_5 pls
 }
