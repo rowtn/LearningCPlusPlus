@@ -5,13 +5,18 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
+#include <thread>
+#include <vector>
 
 using namespace std;
 
 void init(void);
 void display(void);
 void gameLoop(void);
+void startShoot(int, int);
 struct Player;
+struct Bullet;
+
 enum Dir {
     RIGHT, LEFT
 };
@@ -20,6 +25,9 @@ const char bar = char(178);
 const string barrier[2] = { { bar, bar, bar }, { bar, bar, bar } };
 char board[30][30];
 const string playerAvatar = { char(205), char(202), char(205) };
+const char bullet = char(167);
+int bulletCount = -1;
+Bullet bullets[];
 
 struct Player {
 private:
@@ -54,13 +62,47 @@ public:
 
     void move(Dir dir) {
         if (dir == RIGHT) {
-            if (x < 28) {
+            if (x < 27) {
                 x++; 
             }
         }
         else if (dir == LEFT) {
             if (x > 1) x--;
         }
+    }
+    void fire() {
+        startShoot(x + 1, y + 1);
+    }
+
+};
+
+struct Bullet {
+private:
+    int x, y;
+    string shooter;
+public:
+    
+    Bullet(int i, int j, string s) {
+        x = i;
+        y = j;
+        shooter = s;
+    }
+
+    void move() {
+        if (shooter == "Player") {
+            y--;
+        }
+        else {
+            y++;
+        }
+    }
+
+    int getX() {
+        return x;
+    }
+
+    int getY() {
+        return y;
     }
 };
 
@@ -69,10 +111,21 @@ Player player = Player(3, 28, playerAvatar);
 bool gameRunning = true;
 
 int _tmain(int argc, _TCHAR* argv[]) {
+    system("mode 33,40");   //Set mode to ensure window does not exceed buffer size
+    SMALL_RECT WinRect = { 0, 0, 33, 40 };   //New dimensions for window in 8x12 pixel chars
+    SMALL_RECT* WinSize = &WinRect;
+    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);   //Set new size for window
     init();
     display();
+    long t = GetTickCount();
     while (gameRunning) {
         gameLoop();
+        if (GetTickCount() - t > 100) {
+            t = GetTickCount();
+            for (int i = 0; i < bulletCount; i++) {
+                bullets[i].move();
+            }
+        }
     }
     cin.get();
 	return 0;
@@ -127,7 +180,20 @@ void gameLoop() {
             board[player.getY()][player.getX() + i] = player.getAvatar()[i];
         }
     }
+    if (GetAsyncKeyState(VK_SPACE)) {
+        player.fire();
+    }
     display();
     cout << player.getX() << " and " << player.getY() << endl;
     system("pause");
+}
+
+void startShoot(int x, int y, string s) {
+    bullets[bulletCount++] = Bullet(x, y, s);
+    while (y > 1) {
+        Sleep(50);
+        board[y][x] = ' ';
+        y--;
+        board[y][x] = bullet;
+    }
 }
