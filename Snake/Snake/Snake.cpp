@@ -41,8 +41,14 @@ public:
     Player(int i, int j) {
         x = i;
         y = j;
-        lastPiece[0] = x;
-        lastPiece[1] = y;
+        IntPair first;
+        first.x = x;
+        first.y = y;
+        pieces.push_front(first);
+        first.x--;
+        pieces.push_back(first);
+        first.x--;
+        pieces.push_back(first);
     }
 
     int getX() {
@@ -67,7 +73,42 @@ public:
         return pieces;
     }
 
+    void move() {
+        for (list<IntPair>::iterator it = pieces.begin(); it != pieces.end(); ++it) {
+            board[it->y][it->x] = ' ';
+        }
+        pieces.pop_back();
+        IntPair next;
+        next.x = pieces.begin()->x;
+        next.y = pieces.begin()->y;
+        switch (currentDirection) {
+        case UP:
+            next.y--;
+            pieces.push_front(next);
+            break;
+        case DOWN:
+            next.y++;
+            pieces.push_front(next);
+            break;
+        case RIGHT:
+            next.x++;
+            pieces.push_front(next);
+            break;
+        case LEFT:
+            next.x--;
+            pieces.push_front(next);
+            break;
+        }
+        placeOnBoard();
+    }
+
+    void setDirection(Direction dir) {
+        currentDirection = dir;
+    }
+
 };
+
+Player player(5, 5);
 
 int _tmain(int argc, _TCHAR* argv[]) {
     /* Init */
@@ -79,6 +120,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);   //Set new size for window
 
     initBoard();
+    player.placeOnBoard();
     clear();
     system("cls");
     refresh();
@@ -86,7 +128,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
         gameLoop();
         display();
         refresh();
-        gameRunning = false;
+        //gameRunning = false;
     }
     cin.get();
 	return 0;
@@ -98,7 +140,6 @@ void initBoard() {
             if (i == 0 || i == 29 || j == 0 || j == 29) board[i][j] = char(219);
         }
     }
-    board[10][5] = SNAKE_PIECE;
 }
 
 void display() {
@@ -119,5 +160,18 @@ void display() {
 }
 
 void gameLoop() {
-    //stuff
+    if (GetAsyncKeyState(VK_RIGHT)) {
+        player.setDirection(RIGHT);
+    }
+    if (GetAsyncKeyState(VK_LEFT)) {
+        player.setDirection(LEFT);
+    }
+    if (GetAsyncKeyState(VK_DOWN)) {
+        player.setDirection(DOWN);
+    }
+    if (GetAsyncKeyState(VK_UP)) {
+        player.setDirection(UP);
+    }
+    player.move();
+    Sleep(50);
 }
