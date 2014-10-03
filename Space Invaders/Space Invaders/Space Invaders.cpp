@@ -308,6 +308,7 @@ void init() {
 }
 
 void display() {
+    cout << endl;
     for (int i = 0; i < 30; i++) {
         cout << ' ';
         for (int j = 0; j < 30; j++) {
@@ -337,7 +338,7 @@ void gameLoop() {
     player.move(currentDirection);
     enemy.update();
     display();
-    cout << " X:\t" << player.getX() << "\n Y:\t" << player.getY() << endl << " Enemy health:\t" << enemy.getHealth() << endl;
+    cout << " X:\t" << player.getX() << "\n Y:\t" << player.getY() << endl << " Enemy health:\t" << enemy.getHealth() << "0    "<< endl;
     Sleep(50);
 }
 
