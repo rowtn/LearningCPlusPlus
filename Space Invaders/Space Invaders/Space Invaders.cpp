@@ -207,7 +207,7 @@ public:
 
     void update() {
         if (--shootCount < 1) {
-            shootCount = 10 + (rand() % 5);
+            shootCount = 5 + (rand() % 10);
             startShoot(y + 2, x + 2, "enemy");
         }
         for (int i = 0; i < 3; i++) {
@@ -267,19 +267,20 @@ int _tmain(int argc, _TCHAR* argv[]) {
     clear();
     system("cls");
     refresh();
+    cout << "\n\n\n\n\n";
     if (won) {
-        cout << "/===================\\" << endl;
-        cout << "|                   |" << endl;
-        cout << "|       YOU WIN     |" << endl;
-        cout << "|                   |" << endl;
-        cout << "\\===================/" << endl;
+        cout << "       /===================\\" << endl;
+        cout << "       |                   |" << endl;
+        cout << "       |       YOU WIN     |" << endl;
+        cout << "       |                   |" << endl;
+        cout << "       \\===================/" << endl;
     }
     else {
-        cout << "/==================\\" << endl;
-        cout << "|                  |" << endl;
-        cout << "|      YOU LOSS    |" << endl;
-        cout << "|                  |" << endl;
-        cout << "\\==================/" << endl;
+        cout << "       /==================\\" << endl;
+        cout << "       |                  |" << endl;
+        cout << "       |      YOU LOSS    |" << endl;
+        cout << "       |                  |" << endl;
+        cout << "       \\==================/" << endl;
     }
     refresh();
     cin.get();
@@ -330,13 +331,13 @@ void gameLoop() {
     if (GetAsyncKeyState(VK_SPACE)) {
         player.fire();
     }
-    player.move(currentDirection);
-    enemy.update();
     for (list<Bullet>::iterator it = bullets.begin(); it != bullets.end(); ++it) {
         it->move();
     }
+    player.move(currentDirection);
+    enemy.update();
     display();
-    cout << " X:\t" << player.getX() << "\n Y:\t" << player.getY() << endl << "Enemy health:\t" << enemy.getHealth() << endl;
+    cout << " X:\t" << player.getX() << "\n Y:\t" << player.getY() << endl << " Enemy health:\t" << enemy.getHealth() << endl;
     Sleep(50);
 }
 
