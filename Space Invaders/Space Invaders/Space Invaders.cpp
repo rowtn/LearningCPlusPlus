@@ -108,7 +108,6 @@ public:
     void fire() {
         startShoot(x + 1, y - 1, "player");
     }
-
 };
 
 class Bullet {
@@ -182,7 +181,6 @@ public:
             board[y][x] = bullet;
         }
     }
-
 };
 
 class Enemy {
@@ -237,7 +235,7 @@ public:
             }
         }
     }
-    
+
     void hit() {
         health--;
         if (health <= 0) {
@@ -306,10 +304,6 @@ void init() {
     for (int i = 0; i < 3; i++) {
         board[player.getY()][player.getX() + i] = avatar[i];
     }
-
-    /* init enemy */
-
-    
 }
 
 void display() {
@@ -323,7 +317,6 @@ void display() {
 }
 
 void gameLoop() {
-    //system("cls");
     clearScreen();
     if (GetAsyncKeyState(VK_RIGHT)) {
         currentDirection = RIGHT;
@@ -339,15 +332,11 @@ void gameLoop() {
     }
     player.move(currentDirection);
     enemy.update();
-    /*for (int i = 0; i <= bullets.size(); i++) {
-        bullets.
-    }*/
     for (list<Bullet>::iterator it = bullets.begin(); it != bullets.end(); ++it) {
         it->move();
     }
     display();
     cout << " X:\t" << player.getX() << "\n Y:\t" << player.getY() << endl << "Enemy health:\t" << enemy.getHealth() << endl;
-    //system("pause");
     Sleep(50);
 }
 
