@@ -40,7 +40,7 @@ const string barrier[2] = { { bar, bar, bar }, { bar, bar, bar } };
 */
 char enemyAvatar[3][7] = {
         { ' ', ' ', char(201), char(202), char(187), ' ', ' ' },
-        { char(206), char(205), char(206), char(203), char(206), char(205), char(206) },
+        { char(206), char(203), char(206), char(203), char(206), char(203), char(206) },
         { ' ', char(206), ' ', ' ', ' ', char(206), ' ' }
 };
 char board[30][30];
