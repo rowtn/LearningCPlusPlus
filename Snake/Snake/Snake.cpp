@@ -9,6 +9,7 @@
 #include <Windows.h>
 #include <list>
 #include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ void display(void);
 void gameLoop(void);
 void spawnFood(void);
 
-const char FOOD = char(167);
+const char FOOD = char(254);
 const char SNAKE_PIECE = char(178);
 const char EMPTY = ' ';
 
@@ -126,7 +127,7 @@ public:
             eat();
         }
 
-        if (board[next.x][next.y] == SNAKE_PIECE) {
+        if (board[next.y][next.x] == SNAKE_PIECE) {
             gameRunning = false;
         }
 
@@ -149,6 +150,7 @@ public:
 };
 
 Player player(5, 5);
+int highScore = 0;
 
 int _tmain(int argc, _TCHAR* argv[]) {
     /* Init */
@@ -159,6 +161,12 @@ int _tmain(int argc, _TCHAR* argv[]) {
     SMALL_RECT* WinSize = &WinRect;
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);   //Set new size for window
 
+    /* read highscores from file */
+    ifstream hsFile;
+    hsFile.open("highscores.txt");
+    hsFile >> highScore;
+    hsFile.close();
+
     initBoard();
     player.placeOnBoard();
     clear();
@@ -168,13 +176,23 @@ int _tmain(int argc, _TCHAR* argv[]) {
     while (gameRunning) {
         gameLoop();
         display();
+        cout << " Score:\t\t" << player.getLength() * 10 << endl;
+        cout << " High score:\t" << highScore << endl;
         refresh();
         //gameRunning = false;
     }
     clear();
     system("cls");
     refresh();
-    cout << "Your final score was " << player.getLength() * 10 << "!" << endl;
+    cout << endl << " Your final score was " << player.getLength() * 10 << "!" << endl;
+    if (player.getLength() * 10 > highScore) {
+        cout << " You beat the high score!" << endl;
+        remove("highscores.txt");
+        ofstream hs;
+        hs.open("highscores.txt");
+        hs << player.getLength() * 10;
+        hs.close();
+    }
     cin.get();
 	return 0;
 }
