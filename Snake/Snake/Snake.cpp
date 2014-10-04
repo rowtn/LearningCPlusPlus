@@ -8,6 +8,7 @@
 #include <curses.h>
 #include <Windows.h>
 #include <list>
+#include <algorithm>
 
 using namespace std;
 
@@ -19,17 +20,26 @@ char board[30][30];
 void initBoard(void);
 void display(void);
 void gameLoop(void);
+void spawnFood(void);
 
 const char FOOD = char(167);
 const char SNAKE_PIECE = char(178);
+const char EMPTY = ' ';
 
 enum Direction {
-    UP, DOWN, LEFT, RIGHT
+    UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4
 };
 
 struct IntPair {
     int x, y;
+
+    bool operator==(IntPair& a) const {
+        return (x == a.x && y == a.y);
+    }
+
 };
+
+IntPair foodCoords;
 
 class Player {
 private:
@@ -37,10 +47,11 @@ private:
     int lastPiece[2];
     Direction currentDirection = RIGHT;
     list<IntPair> pieces;
+    bool addPiece = false;
 public:
     Player(int i, int j) {
-        x = i;
-        y = j;
+        x = i++;
+        y = j++;
         IntPair first;
         first.x = x;
         first.y = y;
@@ -49,6 +60,8 @@ public:
         pieces.push_back(first);
         first.x--;
         pieces.push_back(first);
+        x = pieces.front().y;
+        y = pieces.front().x;
     }
 
     int getX() {
@@ -59,8 +72,11 @@ public:
         return y;
     }
 
-    int eat() {
+    void eat() {
         length++;
+        //TODO: Add extra piece
+        addPiece = true;
+        spawnFood();
     }
 
     void placeOnBoard() {
@@ -69,41 +85,63 @@ public:
         }
     }
 
-    list<IntPair> getAllPieceLocations() {
+    list<IntPair> getAllPieces() {
         return pieces;
     }
 
     void move() {
-        for (list<IntPair>::iterator it = pieces.begin(); it != pieces.end(); ++it) {
-            board[it->y][it->x] = ' ';
-        }
-        pieces.pop_back();
-        IntPair next;
-        next.x = pieces.begin()->x;
-        next.y = pieces.begin()->y;
+        IntPair end = pieces.back();
+        board[end.y][end.x] = EMPTY;
+
+        if (!addPiece) pieces.pop_back();
+        addPiece = false;
+
+        IntPair next = pieces.front();
         switch (currentDirection) {
         case UP:
             next.y--;
-            pieces.push_front(next);
+            y--;
             break;
         case DOWN:
             next.y++;
-            pieces.push_front(next);
+            y++;
             break;
         case RIGHT:
             next.x++;
-            pieces.push_front(next);
+            x++;
             break;
         case LEFT:
             next.x--;
-            pieces.push_front(next);
+            x--;
             break;
         }
+        //cout << "Next piece is: " << board[next.y][next.x] << endl;
+        int i = next.x, j = next.y;
+        if (i == 0 || i == 29 || j == 0 || j == 29) {
+            gameRunning = false;
+            won = false;
+            return;
+        }
+
+        IntPair front = pieces.front();
+        if (front.x == foodCoords.y && front.y == foodCoords.x) {
+            eat();
+        }
+
+        pieces.push_front(next);
         placeOnBoard();
     }
 
     void setDirection(Direction dir) {
         currentDirection = dir;
+    }
+
+    int getLength() {
+        return length;
+    }
+
+    Direction getDirection() {
+        return currentDirection;
     }
 
 };
@@ -124,12 +162,17 @@ int _tmain(int argc, _TCHAR* argv[]) {
     clear();
     system("cls");
     refresh();
+    spawnFood();
     while (gameRunning) {
         gameLoop();
         display();
         refresh();
         //gameRunning = false;
     }
+    clear();
+    system("cls");
+    refresh();
+    cout << "Your final score was " << player.getLength() * 10 << "!" << endl;
     cin.get();
 	return 0;
 }
@@ -157,21 +200,40 @@ void display() {
         }
         cout << endl;
     }
+    /* Debug */
+    //cout << "Player coords:" << player.getY() << ", " << player.getX() << "     " << endl;
+    //cout << "Food coords: " << foodCoords.x << ", " << foodCoords.y << "          "  << endl;
 }
 
 void gameLoop() {
+    Direction dir = player.getDirection();
     if (GetAsyncKeyState(VK_RIGHT)) {
-        player.setDirection(RIGHT);
+        if (!(dir == Direction::LEFT)) player.setDirection(Direction::RIGHT);
     }
     if (GetAsyncKeyState(VK_LEFT)) {
-        player.setDirection(LEFT);
+        if (!(dir == Direction::RIGHT)) player.setDirection(Direction::LEFT);
     }
     if (GetAsyncKeyState(VK_DOWN)) {
-        player.setDirection(DOWN);
+        if (!(dir == Direction::UP)) player.setDirection(Direction::DOWN);
     }
     if (GetAsyncKeyState(VK_UP)) {
-        player.setDirection(UP);
+        if (!(dir == Direction::DOWN)) player.setDirection(Direction::UP);
     }
+    /*
+    [DEBUG]
+    if (GetAsyncKeyState(VK_SPACE)) {
+        system("pause>nul");
+    }*/
     player.move();
-    Sleep(50);
+}
+
+void spawnFood() {
+    int i = rand() % 28 + 1, j = rand() % 28 + 1;
+    while ((i == 0 || i == 29 || j == 0 || j == 29) || board[i][j] == SNAKE_PIECE) {
+        i = rand() % 28 + 1;
+        j = rand() % 28 + 1;
+    }
+    board[i][j] = FOOD;
+    foodCoords.x = i;
+    foodCoords.y = j;
 }
