@@ -12,7 +12,6 @@
 
 using namespace std;
 
-bool won = false;
 bool gameRunning = true;
 
 char board[30][30];
@@ -119,13 +118,16 @@ public:
         int i = next.x, j = next.y;
         if (i == 0 || i == 29 || j == 0 || j == 29) {
             gameRunning = false;
-            won = false;
             return;
         }
 
         IntPair front = pieces.front();
         if (front.x == foodCoords.y && front.y == foodCoords.x) {
             eat();
+        }
+
+        if (board[next.x][next.y] == SNAKE_PIECE) {
+            gameRunning = false;
         }
 
         pieces.push_front(next);
