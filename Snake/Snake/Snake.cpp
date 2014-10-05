@@ -5,7 +5,6 @@
 #include <iostream>
 #include <ctime>
 #include <string>
-#include <curses.h>
 #include <Windows.h>
 #include <list>
 #include <algorithm>
@@ -22,7 +21,7 @@ void display(void);
 void gameLoop(void);
 void spawnFood(void);
 
-const char FOOD = char(254);
+const char FOOD = char(248);
 const char SNAKE_PIECE = char(178);
 const char EMPTY = ' ';
 
@@ -38,6 +37,8 @@ struct IntPair {
     }
 
 };
+
+void addToBoard(IntPair, char);
 
 IntPair foodCoords;
 
@@ -74,15 +75,15 @@ public:
 
     void eat() {
         length++;
-        //TODO: Add extra piece
         addPiece = true;
         spawnFood();
     }
 
     void placeOnBoard() {
         for (list<IntPair>::iterator it = pieces.begin(); it != pieces.end(); ++it) {
-            board[it->y][it->x] = SNAKE_PIECE;
+            addToBoard(*it, SNAKE_PIECE);
         }
+        addToBoard(*pieces.begin(), char(177));
     }
 
     list<IntPair> getAllPieces() {
@@ -91,7 +92,7 @@ public:
 
     void move() {
         IntPair end = pieces.back();
-        board[end.y][end.x] = EMPTY;
+        addToBoard(end, EMPTY);
 
         if (!addPiece) pieces.pop_back();
         addPiece = false;
@@ -115,7 +116,6 @@ public:
             x--;
             break;
         }
-        //cout << "Next piece is: " << board[next.y][next.x] << endl;
         int i = next.x, j = next.y;
         if (i == 0 || i == 29 || j == 0 || j == 29) {
             gameRunning = false;
@@ -155,11 +155,10 @@ int highScore = 0;
 int _tmain(int argc, _TCHAR* argv[]) {
     /* Init */
     srand(time(NULL));
-    initscr();
-    system("mode 32,36");   //Set mode to ensure window does not exceed buffer size
-    SMALL_RECT WinRect = { 0, 0, 31, 40 };   //New dimensions for window in 8x12 pixel chars
+    system("mode 32,36");
+    SMALL_RECT WinRect = { 0, 0, 31, 40 };
     SMALL_RECT* WinSize = &WinRect;
-    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);   //Set new size for window
+    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);
 
     /* read highscores from file */
     ifstream hsFile;
@@ -169,21 +168,16 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
     initBoard();
     player.placeOnBoard();
-    clear();
-    system("cls");
-    refresh();
     spawnFood();
     while (gameRunning) {
         gameLoop();
+        COORD position = { 0, 0 };
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         display();
         cout << " Score:\t\t" << player.getLength() * 10 << endl;
         cout << " High score:\t" << highScore << endl;
-        refresh();
-        //gameRunning = false;
     }
-    clear();
     system("cls");
-    refresh();
     cout << endl << " Your final score was " << player.getLength() * 10 << "!" << endl;
     if (player.getLength() * 10 > highScore) {
         cout << " You beat the high score!" << endl;
@@ -210,19 +204,10 @@ void display() {
     for (int i = 0; i < 30; i++) {
         cout << ' ';
         for (int j = 0; j < 30; j++) {
-            if (board[i][j] == SNAKE_PIECE) {
-                //TODO Colour
-            }
-            else {
-                //TODO
-            }
             cout << board[i][j];
         }
         cout << endl;
     }
-    /* Debug */
-    //cout << "Player coords:" << player.getY() << ", " << player.getX() << "     " << endl;
-    //cout << "Food coords: " << foodCoords.x << ", " << foodCoords.y << "          "  << endl;
 }
 
 void gameLoop() {
@@ -239,11 +224,6 @@ void gameLoop() {
     if (GetAsyncKeyState(VK_UP)) {
         if (!(dir == Direction::DOWN)) player.setDirection(Direction::UP);
     }
-    /*
-    [DEBUG]
-    if (GetAsyncKeyState(VK_SPACE)) {
-        system("pause>nul");
-    }*/
     player.move();
 }
 
@@ -256,4 +236,8 @@ void spawnFood() {
     board[i][j] = FOOD;
     foodCoords.x = i;
     foodCoords.y = j;
+}
+
+void addToBoard(IntPair i, char c) {
+    board[i.y][i.x] = c;
 }
