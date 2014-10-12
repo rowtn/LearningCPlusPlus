@@ -180,6 +180,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     player.placeOnBoard();
     spawnFood();
     thread t(music);
+    t.detach();
     while (gameRunning) {
         gameLoop();
         COORD position = { 0, 0 };
@@ -255,34 +256,87 @@ void addToBoard(IntPair i, char c) {
 
 void music() {
     while (true) {
-        Beep(Ds5, 0);
-        Beep(C4, 2000);
+        Beep(D5, 200);
+        Beep(Ds5, 200);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(Ds5, 200);
+        Beep(E5, 200);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 200);
+        Beep(B4, 200);
+        Beep(C5, 0);
+        Beep(B4, 200);
+        Beep(D5, 400);
+        Beep(C5, 400);
 
-        Beep(As5, 0);
-        Beep(G4, 2000);
-        
-        Beep(D5, 0);
-        Beep(As4, 2000);
-        
-        Beep(A5, 0);
-        Beep(F4, 2000);
-        
-        Beep(D5, 0);
-        Beep(As4, 2000);
-        
-        Beep(A5, 0);
-        Beep(F4, 2000);
+        Beep(D5, 200);
+        Beep(Ds5, 200);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(A5, 200);
+        Beep(G5, 200);
+        Beep(Fs5, 200);
+        Beep(A4, 200);
+        Beep(C5, 200);
+        Beep(E5, 400);
+        Beep(D5, 200);
+        Beep(C5, 200);
+        Beep(A4, 200);
+        Beep(D5, 600);
 
-        Beep(Ds4, 0);
-        Beep(Ds5, 0);
-        Beep(C5, 250);
-        Beep(C5, 250);
-        Beep(C5, 250);
-        Beep(C5, 250);
-        Beep(C5, 250);
-        Beep(C5, 250);
-        Beep(C5, 250);
-        Beep(C5, 250);
-        Beep(C5, 250);
+        Beep(D5, 200);
+        Beep(Ds5, 200);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(E5, 200);
+        Beep(C6, 400);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(Ds5, 200);
+        Beep(E5, 200);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 200);
+        Beep(B4, 200);
+        Beep(C5, 0);
+        Beep(B4, 200);
+        Beep(D5, 400);
+        Beep(C5, 400);
+
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 200);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 400);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 200);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 400);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 200);
+        Beep(C5, 200);
+        Beep(D5, 200);
+        Beep(E5, 400);
+        Beep(B4, 200);
+        Beep(D5, 200);
+        Beep(C5, 400);
     }
 }
