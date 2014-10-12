@@ -275,7 +275,7 @@ void music() {
         Beep(C5, 0);
         Beep(B4, 200);
         Beep(D5, 400);
-        Beep(C5, 400);
+        Beep(C5, 600);
 
         Beep(D5, 200);
         Beep(Ds5, 200);
@@ -315,7 +315,7 @@ void music() {
         Beep(C5, 0);
         Beep(B4, 200);
         Beep(D5, 400);
-        Beep(C5, 400);
+        Beep(C5, 600);
 
         Beep(C5, 200);
         Beep(D5, 200);
@@ -336,7 +336,7 @@ void music() {
         Beep(D5, 200);
         Beep(E5, 400);
         Beep(B4, 200);
-        Beep(D5, 200);
-        Beep(C5, 400);
+        Beep(D5, 400);
+        Beep(C5, 600);
     }
 }
