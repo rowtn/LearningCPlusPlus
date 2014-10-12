@@ -3,12 +3,15 @@
 
 #include "stdafx.h"
 #include <iostream>
+#include <stdarg.h>
 #include <ctime>
 #include <string>
 #include <Windows.h>
 #include <list>
 #include <algorithm>
 #include <fstream>
+#include <mmsystem.h>
+#include <thread>
 
 using namespace std;
 
@@ -20,6 +23,7 @@ void initBoard(void);
 void display(void);
 void gameLoop(void);
 void spawnFood(void);
+void music(void);
 
 const char FOOD = char(248);
 const char SNAKE_PIECE = char(178);
@@ -27,6 +31,12 @@ const char EMPTY = ' ';
 
 enum Direction {
     UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4
+};
+
+enum Note {
+    C4 = 262, Cs4 = 277, D4 = 294, Ds4 = 311, E4 = 330, F4 = 349, Fs4 = 370, G4 = 392, Gs4 = 415, A4 = 440, As4 = 466, B4 = 494,
+    C5 = 523, Cs5 = 554, D5 = 587, Ds5 = 622, E5 = 659, F5 = 698, Fs5 = 740, G5 = 784, Gs5 = 831, A5 = 880, As5 = 932, B5 = 986,
+    C6 = 1047, Cs6 = 1109, D6 = 1775, Ds6 = 1245, E6 = 1319, F6 = 1397, Fs6 = 1480, G6 = 1568, Gs6 = 1661, A6 = 1760, As6 = 1865, B6 = 1976
 };
 
 struct IntPair {
@@ -169,6 +179,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     initBoard();
     player.placeOnBoard();
     spawnFood();
+    thread t(music);
     while (gameRunning) {
         gameLoop();
         COORD position = { 0, 0 };
@@ -240,4 +251,38 @@ void spawnFood() {
 
 void addToBoard(IntPair i, char c) {
     board[i.y][i.x] = c;
+}
+
+void music() {
+    while (true) {
+        Beep(Ds5, 0);
+        Beep(C4, 2000);
+
+        Beep(As5, 0);
+        Beep(G4, 2000);
+        
+        Beep(D5, 0);
+        Beep(As4, 2000);
+        
+        Beep(A5, 0);
+        Beep(F4, 2000);
+        
+        Beep(D5, 0);
+        Beep(As4, 2000);
+        
+        Beep(A5, 0);
+        Beep(F4, 2000);
+
+        Beep(Ds4, 0);
+        Beep(Ds5, 0);
+        Beep(C5, 250);
+        Beep(C5, 250);
+        Beep(C5, 250);
+        Beep(C5, 250);
+        Beep(C5, 250);
+        Beep(C5, 250);
+        Beep(C5, 250);
+        Beep(C5, 250);
+        Beep(C5, 250);
+    }
 }
