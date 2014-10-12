@@ -167,6 +167,15 @@ int highScore = 0;
 int _tmain(int argc, _TCHAR* argv[]) {
     /* Init */
     TRON_MUSIC = (time(NULL) % 2 == 0);
+    string foo;
+    cout << "Do you want to listen to the computer think?\t";
+    cin >> foo;
+    if (foo == "yes" || foo == "y") {
+        TRON_MUSIC = true;
+    }
+    else {
+        TRON_MUSIC = false;
+    }
     srand(time(NULL));
     system("mode 32,36");
     SMALL_RECT WinRect = { 0, 0, 31, 40 };
