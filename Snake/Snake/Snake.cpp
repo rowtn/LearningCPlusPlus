@@ -16,6 +16,7 @@
 using namespace std;
 
 bool gameRunning = true;
+bool TRON_MUSIC = true;
 
 char board[30][30];
 
@@ -164,6 +165,7 @@ int highScore = 0;
 
 int _tmain(int argc, _TCHAR* argv[]) {
     /* Init */
+    TRON_MUSIC = (time(NULL) % 2 == 0);
     srand(time(NULL));
     system("mode 32,36");
     SMALL_RECT WinRect = { 0, 0, 31, 40 };
@@ -256,87 +258,92 @@ void addToBoard(IntPair i, char c) {
 
 void music() {
     while (true) {
-        Beep(D5, 200);
-        Beep(Ds5, 200);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(Ds5, 200);
-        Beep(E5, 200);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 200);
-        Beep(B4, 200);
-        Beep(C5, 0);
-        Beep(B4, 200);
-        Beep(D5, 400);
-        Beep(C5, 600);
+        if (TRON_MUSIC) { 
+            Beep(rand() % 1800 + 200, 200); 
+        }
+        else {
+            Beep(D5, 200);
+            Beep(Ds5, 200);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(Ds5, 200);
+            Beep(E5, 200);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 200);
+            Beep(B4, 200);
+            Beep(C5, 0);
+            Beep(B4, 200);
+            Beep(D5, 400);
+            Beep(C5, 600);
 
-        Beep(D5, 200);
-        Beep(Ds5, 200);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(A5, 200);
-        Beep(G5, 200);
-        Beep(Fs5, 200);
-        Beep(A4, 200);
-        Beep(C5, 200);
-        Beep(E5, 400);
-        Beep(D5, 200);
-        Beep(C5, 200);
-        Beep(A4, 200);
-        Beep(D5, 600);
+            Beep(D5, 200);
+            Beep(Ds5, 200);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(A5, 200);
+            Beep(G5, 200);
+            Beep(Fs5, 200);
+            Beep(A4, 200);
+            Beep(C5, 200);
+            Beep(E5, 400);
+            Beep(D5, 200);
+            Beep(C5, 200);
+            Beep(A4, 200);
+            Beep(D5, 600);
 
-        Beep(D5, 200);
-        Beep(Ds5, 200);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(E5, 200);
-        Beep(C6, 400);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(Ds5, 200);
-        Beep(E5, 200);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 200);
-        Beep(B4, 200);
-        Beep(C5, 0);
-        Beep(B4, 200);
-        Beep(D5, 400);
-        Beep(C5, 600);
+            Beep(D5, 200);
+            Beep(Ds5, 200);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(E5, 200);
+            Beep(C6, 400);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(Ds5, 200);
+            Beep(E5, 200);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 200);
+            Beep(B4, 200);
+            Beep(C5, 0);
+            Beep(B4, 200);
+            Beep(D5, 400);
+            Beep(C5, 600);
 
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 200);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 400);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 200);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 400);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 200);
-        Beep(C5, 200);
-        Beep(D5, 200);
-        Beep(E5, 400);
-        Beep(B4, 200);
-        Beep(D5, 400);
-        Beep(C5, 600);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 200);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 400);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 200);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 400);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 200);
+            Beep(C5, 200);
+            Beep(D5, 200);
+            Beep(E5, 400);
+            Beep(B4, 200);
+            Beep(D5, 400);
+            Beep(C5, 600);
+        }
     }
 }
