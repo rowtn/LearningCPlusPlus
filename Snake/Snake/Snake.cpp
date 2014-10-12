@@ -15,6 +15,7 @@
 
 using namespace std;
 
+/* Variables */
 bool gameRunning = true;
 bool TRON_MUSIC = true;
 
