@@ -166,10 +166,8 @@ int highScore = 0;
 int _tmain(int argc, _TCHAR* argv[]) {
     /* Init */
     TRON_MUSIC = (time(NULL) % 2 == 0);
-    TRON_MUSIC = false;
     srand(time(NULL));
     system("mode 32,36");
-    system("color 0a");
     SMALL_RECT WinRect = { 0, 0, 31, 40 };
     SMALL_RECT* WinSize = &WinRect;
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);
@@ -262,7 +260,8 @@ void music() {
     while (true) {
         if (TRON_MUSIC) { 
             Beep(rand() % 1800 + 200, 200); 
-        } else {
+        }
+        else {
             Beep(D5, 200);
             Beep(Ds5, 200);
             Beep(E5, 200);
