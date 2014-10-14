@@ -9,6 +9,7 @@
 #include <thread>
 #include <vector>
 #include <list>
+#include <curses.h>
 
 using namespace std;
 
@@ -250,6 +251,7 @@ Enemy enemy = Enemy(3, 1);
 
 int _tmain(int argc, _TCHAR* argv[]) {
     srand(time(NULL));
+    initscr();
     system("mode 32,36");   //Set mode to ensure window does not exceed buffer size
     SMALL_RECT WinRect = { 0, 0, 31, 40 };   //New dimensions for window in 8x12 pixel chars
     SMALL_RECT* WinSize = &WinRect;
@@ -262,7 +264,9 @@ int _tmain(int argc, _TCHAR* argv[]) {
     while (gameRunning) {
         gameLoop();
     }
+    clear();
     system("cls");
+    refresh();
     cout << "\n\n\n\n\n";
     if (won) {
         cout << "       /===================\\" << endl;
@@ -274,10 +278,11 @@ int _tmain(int argc, _TCHAR* argv[]) {
     else {
         cout << "       /==================\\" << endl;
         cout << "       |                  |" << endl;
-        cout << "       |      YOU LOST    |" << endl;
+        cout << "       |      YOU LOSS    |" << endl;
         cout << "       |                  |" << endl;
         cout << "       \\==================/" << endl;
     }
+    refresh();
     cin.get();
 	return 0;
 }
@@ -342,7 +347,7 @@ void startShoot(int x, int y, string shooter) {
 }
 
 void clearScreen() {
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD());
+    refresh();
 }
 
 void hitEnemy() {
